@@ -1,0 +1,6 @@
+framework module Pods_PiGuardMobile {
+  umbrella header "Pods-PiGuardMobile-umbrella.h"
+
+  export *
+  module * { export * }
+}

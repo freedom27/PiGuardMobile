@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  RemoteViewController.swift
 //  PiGuardMobile
 //
 //  Created by Stefano Vettor on 02/04/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class RemoteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
