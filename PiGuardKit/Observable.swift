@@ -9,11 +9,11 @@
 import Foundation
 
 private class Observation<T> {
-    typealias ObserverClosure = T->Void
+    typealias ObserverClosure = (T)->Void
     let observer: ObserverClosure
-    var unobserveHandler: (Observation->Void)?
+    var unobserveHandler: ((Observation)->Void)?
     
-    init(observer: ObserverClosure) {
+    init(observer: @escaping ObserverClosure) {
         self.observer = observer
     }
 }
@@ -28,23 +28,23 @@ public protocol Observable: class {
     associatedtype ObservedType
     
     var value: ObservedType { get set }
-    func observe(observer: ObservedType->Void) -> Disposable
+    func observe(_ observer: @escaping (ObservedType)->Void) -> Disposable
 }
 
 public protocol Disposable {
     func dispose()
-    func addToDisposablesBag(bag: DisposablesBag)
+    func addToDisposablesBag(_ bag: DisposablesBag)
 }
 
 public extension Disposable {
-    public func addToDisposablesBag(bag: DisposablesBag) {
+    public func addToDisposablesBag(_ bag: DisposablesBag) {
         bag.add(self)
     }
 }
 
 
-public class DisposablesBag {
-    private var disposables = [Disposable]()
+open class DisposablesBag {
+    fileprivate var disposables = [Disposable]()
     
     public init() {}
     
@@ -52,37 +52,37 @@ public class DisposablesBag {
         disposeAll()
     }
     
-    public func add(disposable: Disposable) {
+    open func add(_ disposable: Disposable) {
         disposables.append(disposable)
     }
     
-    public func disposeAll() {
+    open func disposeAll() {
         disposables.forEach{$0.dispose()}
     }
 }
 
-public class Dynamic<T>: Observable {
+open class Dynamic<T>: Observable {
     
     //consider to implement a lazy queue for objects deallocation
     
-    public var value: T {
+    open var value: T {
         didSet {
             observations.forEach{$0.observer(self.value)}
         }
     }
     
-    private var observations = [Observation<T>]()
+    fileprivate var observations = [Observation<T>]()
     
     public init(value: T) {
         self.value = value
     }
     
-    public func observe(observer: T->Void) -> Disposable {
+    open func observe(_ observer: @escaping (T)->Void) -> Disposable {
         let observation = Observation<T>(observer: observer)
         observation.unobserveHandler = { [weak self] (observation: Observation<T>) in
             // dispatched to the main queue to avoid issues caused by concurrency
             // since the main queue is a serial one
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 if let newObservations = self?.observations.filter({!($0 === observation)}) {
                     self?.observations = newObservations
                 }

@@ -44,9 +44,9 @@ class SummaryViewController: UIViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    private let viewModel = SummaryViewModel()
-    private var streamingController: MjpegStreamingController?
-    private let disposeBag = DisposablesBag()
+    fileprivate let viewModel = SummaryViewModel()
+    fileprivate var streamingController: MjpegStreamingController?
+    fileprivate let disposeBag = DisposablesBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,20 +54,20 @@ class SummaryViewController: UIViewController {
         initializeViewModel()
         initializeStreamingController()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(refreshViewModel), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshViewModel), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         if SettingsManager.sharedInstance.settingsLoaded {
             refreshViewModel()
         } else {
-            performSegueWithIdentifier(SegueIdentifier.Settings.rawValue, sender: self)
+            performSegue(withIdentifier: SegueIdentifier.Settings.rawValue, sender: self)
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         streamingController?.stop()
     }
@@ -141,69 +141,69 @@ class SummaryViewController: UIViewController {
         
         viewModel.temperatureHistory.observe { [unowned self] in
             if $0.isEmpty {
-                self.temperatureChart.hidden = true
+                self.temperatureChart.isHidden = true
             } else {
-                self.temperatureChart.hidden = false
-                self.setupLineChart(self.temperatureChart, withLineColor: UIColor.redColor(), andName: "temperature", andData: $0)
+                self.temperatureChart.isHidden = false
+                self.setupLineChart(self.temperatureChart, withLineColor: UIColor.red, andName: "temperature", andData: $0)
             }
         }.addToDisposablesBag(disposeBag)
         
         viewModel.humidityHistory.observe { [unowned self] in
             if $0.isEmpty {
-                self.humidityChart.hidden = true
+                self.humidityChart.isHidden = true
             } else {
-                self.humidityChart.hidden = false
-                self.setupLineChart(self.humidityChart, withLineColor: UIColor.blueColor(), andName: "humidity", andData: $0)
+                self.humidityChart.isHidden = false
+                self.setupLineChart(self.humidityChart, withLineColor: UIColor.blue, andName: "humidity", andData: $0)
             }
         }.addToDisposablesBag(disposeBag)
         
         viewModel.pressureHistory.observe { [unowned self] in
             if $0.isEmpty {
-                self.pressureChart.hidden = true
+                self.pressureChart.isHidden = true
             } else {
-                self.pressureChart.hidden = false
-                self.setupLineChart(self.pressureChart, withLineColor: UIColor.cyanColor(), andName: "pressure", andData: $0)
+                self.pressureChart.isHidden = false
+                self.setupLineChart(self.pressureChart, withLineColor: UIColor.cyan, andName: "pressure", andData: $0)
             }
         }.addToDisposablesBag(disposeBag)
         
         viewModel.co2History.observe { [unowned self] in
             if $0.isEmpty {
-                self.co2Chart.hidden = true
+                self.co2Chart.isHidden = true
             } else {
-                self.co2Chart.hidden = false
-                self.setupBarChart(self.co2Chart, withBarColor: UIColor.lightGrayColor(), andName: "co2", andData: $0)
+                self.co2Chart.isHidden = false
+                self.setupBarChart(self.co2Chart, withBarColor: UIColor.lightGray, andName: "co2", andData: $0)
             }
         }.addToDisposablesBag(disposeBag)
         
         viewModel.motionHistory.observe { [unowned self] in
             if $0.isEmpty {
-                self.alarmButtonItem.enabled = false
-                self.alarmButtonItem.tintColor = UIColor.grayColor()
+                self.alarmButtonItem.isEnabled = false
+                self.alarmButtonItem.tintColor = UIColor.gray
                 self.alarmButtonItem.removeBadge()
             } else {
-                self.alarmButtonItem.enabled = true
-                self.alarmButtonItem.tintColor = UIColor.redColor()
+                self.alarmButtonItem.isEnabled = true
+                self.alarmButtonItem.tintColor = UIColor.red
                 self.alarmButtonItem.addBadge(number: 1, withOffset: CGPoint(x: 10, y: 10))
             }
         }.addToDisposablesBag(disposeBag)
         
         viewModel.systemOn.observe { [unowned self] in
             let imageName = $0 ? "activeOnIcon" : "activeOffIcon"
-            self.onOffButton.setBackgroundImage(UIImage(named: imageName), forState: .Normal)
+            self.onOffButton.setBackgroundImage(UIImage(named: imageName), for: UIControlState())
         }.addToDisposablesBag(disposeBag)
         
         viewModel.surveillanceOn.observe { [unowned self] in
             let imageName = $0 ? "surveillanceOnIcon" : "surveillanceOffIcon"
-            self.surveillanceButton.setBackgroundImage(UIImage(named: imageName), forState: .Normal)
+            self.surveillanceButton.setBackgroundImage(UIImage(named: imageName), for: UIControlState())
         }.addToDisposablesBag(disposeBag)
         
         viewModel.errorHandler = { [unowned self] in
             let message: String
             if let error = $0 as? PiGuardError {
                 switch error {
-                case .EmptyResponseError:
+                case .emptyResponseError:
                     message = "The response from the server was empty"
-                case .SettingsMissing:
+                case .settingsMissing:
                     message = "Missing settings"
                 default:
                     message = "Unkown error"
@@ -212,7 +212,7 @@ class SummaryViewController: UIViewController {
                 let error = $0 as NSError
                 message = error.localizedDescription
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.diaplayAlertMessage(message)
             }
         }
@@ -228,15 +228,15 @@ class SummaryViewController: UIViewController {
         }
     }
     
-    func setupLineChart(chart: LineChartView, withLineColor lineColor: UIColor, andName name: String, andData data: [(Double, String)]) {
+    func setupLineChart(_ chart: LineChartView, withLineColor lineColor: UIColor, andName name: String, andData data: [(Double, String)]) {
         var dataEntries = [ChartDataEntry]()
         var xVals = [String]()
-        for (i, e) in data.enumerate() {
-            dataEntries.append(ChartDataEntry(value: e.0, xIndex: i))
+        for (i, e) in data.enumerated() {
+            dataEntries.append(ChartDataEntry(x: Double(i), y: e.0))
             xVals.append("\(e.1)")
         }
         
-        let chartDataSet = LineChartDataSet(yVals: dataEntries, label: name)
+        let chartDataSet = LineChartDataSet(values: dataEntries, label: name)
         chartDataSet.circleRadius = 3.0
         chartDataSet.lineWidth = 1.0
         chartDataSet.drawCircleHoleEnabled = false
@@ -245,7 +245,7 @@ class SummaryViewController: UIViewController {
         chartDataSet.drawCirclesEnabled = false
         chartDataSet.lineWidth = 2.0
         chartDataSet.drawValuesEnabled = false
-        chartDataSet.drawCubicEnabled = true
+        chartDataSet.mode = .cubicBezier
         
         
         chart.highlightPerTapEnabled = false
@@ -254,42 +254,43 @@ class SummaryViewController: UIViewController {
         chart.rightAxis.enabled = false
         //temperatureChart.drawGridBackgroundEnabled = false
         //temperatureChart.leftAxis.drawGridLinesEnabled = false
-        chart.leftAxis.valueFormatter = NSNumberFormatter()
-        chart.leftAxis.valueFormatter?.maximumFractionDigits = 0
-        chart.xAxis.labelPosition = .Bottom
+        
+        /*chart.leftAxis.valueFormatter = NumberFormatter()
+        chart.leftAxis.valueFormatter?.maximumFractionDigits = 0*/
+        chart.xAxis.labelPosition = .bottom
         chart.xAxis.drawGridLinesEnabled = false
         //temperatureChart.xAxis.enabled = false
         chart.descriptionText = ""
-        chart.legend.position = .AboveChartRight
+        chart.legend.position = .aboveChartRight
         
-        let chartData = LineChartData(xVals: xVals, dataSet: chartDataSet)
+        let chartData = LineChartData(dataSet: chartDataSet)
         chart.data = chartData
         chart.animate(xAxisDuration: 2.0)
     }
     
-    func colorForCO2ppm(ppm: Int) -> UIColor {
+    func colorForCO2ppm(_ ppm: Int) -> UIColor {
         if ppm > 600 {
-            return UIColor.yellowColor()
+            return UIColor.yellow
         } else if ppm > 1000 {
-            return UIColor.orangeColor()
+            return UIColor.orange
         } else if ppm > 1500 {
-            return UIColor.redColor()
+            return UIColor.red
         } else {
-            return UIColor.grayColor()
+            return UIColor.gray
         }
     }
     
-    func setupBarChart(chart: BarChartView, withBarColor barColor: UIColor, andName name: String, andData data: [(Int, String)]) {
+    func setupBarChart(_ chart: BarChartView, withBarColor barColor: UIColor, andName name: String, andData data: [(Int, String)]) {
         var dataEntries = [BarChartDataEntry]()
         var xVals = [String]()
         //var barColors = [UIColor]()
-        for (i, e) in data.enumerate() {
-            dataEntries.append(BarChartDataEntry(value: Double(e.0), xIndex: i))
+        for (i, e) in data.enumerated() {
+            dataEntries.append(BarChartDataEntry(x: Double(i), y: Double(e.0)))
             xVals.append("\(e.1)")
             //barColors.append(colorForCO2ppm(e.0))
         }
         
-        let chartDataSet = BarChartDataSet(yVals: dataEntries, label: name)
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: name)
         chartDataSet.setColor(barColor)
         chartDataSet.drawValuesEnabled = false
         //chartDataSet.colors = barColors
@@ -297,75 +298,75 @@ class SummaryViewController: UIViewController {
         chart.highlightPerTapEnabled = false
         chart.highlightPerDragEnabled = false
         chart.rightAxis.enabled = false
-        chart.xAxis.labelPosition = .Bottom
+        chart.xAxis.labelPosition = .bottom
         chart.xAxis.drawGridLinesEnabled = false
         chart.descriptionText = ""
-        chart.legend.position = .AboveChartRight
+        chart.legend.position = .aboveChartRight
         
-        let chartData = BarChartData(xVals: xVals, dataSet: chartDataSet)
+        let chartData = BarChartData(dataSet: chartDataSet)
         chart.data = chartData
         chart.animate(xAxisDuration: 2.0)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifierForSegue(segue) {
         case .MotionPictures:
-            if let vc = segue.destinationViewController as? MotionPicturesViewController {
+            if let vc = segue.destination as? MotionPicturesViewController {
                 vc.motions = viewModel.motionHistory.value
                 alarmButtonItem.removeBadge()
             }
         case .Settings:
-            if let vc = segue.destinationViewController as? SettingsViewController {
+            if let vc = segue.destination as? SettingsViewController {
                 vc.completionHandler = refreshViewModel
             }
         }
         
     }
     
-    func segueIdentifierForSegue(segue: UIStoryboardSegue) -> SegueIdentifier {
+    func segueIdentifierForSegue(_ segue: UIStoryboardSegue) -> SegueIdentifier {
         guard let identifier = segue.identifier,
-            segueIdentifier = SegueIdentifier(rawValue: identifier) else {
+            let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
                 fatalError("Invalid segue identifier \(segue.identifier).") }
         
         return segueIdentifier
     }
     
-    func diaplayAlertMessage(message: String) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
-        let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    func diaplayAlertMessage(_ message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(OKAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func playAndStop(sender: AnyObject) {
+    @IBAction func playAndStop(_ sender: AnyObject) {
         guard let streamingController = streamingController,
             let streamingURL = viewModel.streamingURL else { return }
         
         if streamingController.isPlaying() {
             streamingController.stop()
-            playStopButton.setBackgroundImage(UIImage(named: "play"), forState: .Normal)
-            playStopButton.setBackgroundImage(UIImage(named: "playHighlight"), forState: .Highlighted)
-            playStopButton.setBackgroundImage(UIImage(named: "playHighlight"), forState: .Selected)
+            playStopButton.setBackgroundImage(UIImage(named: "play"), for: UIControlState())
+            playStopButton.setBackgroundImage(UIImage(named: "playHighlight"), for: .highlighted)
+            playStopButton.setBackgroundImage(UIImage(named: "playHighlight"), for: .selected)
         } else {
             streamingController.play(url: streamingURL)
-            playStopButton.setBackgroundImage(UIImage(named: "stop"), forState: .Normal)
-            playStopButton.setBackgroundImage(UIImage(named: "stopHighlight"), forState: .Highlighted)
-            playStopButton.setBackgroundImage(UIImage(named: "stopHighlight"), forState: .Selected)
+            playStopButton.setBackgroundImage(UIImage(named: "stop"), for: UIControlState())
+            playStopButton.setBackgroundImage(UIImage(named: "stopHighlight"), for: .highlighted)
+            playStopButton.setBackgroundImage(UIImage(named: "stopHighlight"), for: .selected)
         }
         
     }
     
-    @IBAction func takeSnapshot(sender: AnyObject) {
+    @IBAction func takeSnapshot(_ sender: AnyObject) {
         PiGuardKit.command(.Snapshot).wait(forSeconds: 2.0)
         .then { [unowned self] _ in self.viewModel.loadData() }
     }
     
-    @IBAction func startAndStop(sender: AnyObject) {
+    @IBAction func startAndStop(_ sender: AnyObject) {
         let command: CommandType = viewModel.systemOn.value ? .Stop : .Start
         PiGuardKit.command(command).then(PiGuardKit.systemStatusFromJson).then(viewModel.prepareStatus)
     }
     
-    @IBAction func surveillanceOnAndOff(sender: AnyObject) {
+    @IBAction func surveillanceOnAndOff(_ sender: AnyObject) {
         let command: CommandType = viewModel.surveillanceOn.value ? .Monitor : .Surveil
         PiGuardKit.command(command).then(PiGuardKit.systemStatusFromJson).then(viewModel.prepareStatus)
     }

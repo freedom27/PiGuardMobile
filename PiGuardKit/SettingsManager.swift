@@ -18,28 +18,28 @@ public struct Credentials {
     }
 }
 
-public class SettingsManager {
-    public static var sharedInstance = SettingsManager()
+open class SettingsManager {
+    open static var sharedInstance = SettingsManager()
     
-    public var credentials: Credentials?
-    public var url: String?
+    open var credentials: Credentials?
+    open var url: String?
     
-    private init() {
-        if let username = NSUserDefaults.standardUserDefaults() .objectForKey("username") as? String,
-            let password = NSUserDefaults.standardUserDefaults() .objectForKey("password") as? String {
+    fileprivate init() {
+        if let username = UserDefaults.standard .object(forKey: "username") as? String,
+            let password = UserDefaults.standard .object(forKey: "password") as? String {
             credentials = Credentials(userName: username, password: password)
         }
         
-        if let siteUrl = NSUserDefaults.standardUserDefaults() .objectForKey("siteUrl") as? String {
+        if let siteUrl = UserDefaults.standard .object(forKey: "siteUrl") as? String {
             url = siteUrl
         }
     }
     
-    public var settingsLoaded: Bool {
+    open var settingsLoaded: Bool {
         return credentials != nil && url != nil
     }
     
-    public var baseURL: String? {
+    open var baseURL: String? {
         if settingsLoaded {
             return "https://\(url!):2728"
         } else {
@@ -47,7 +47,7 @@ public class SettingsManager {
         }
     }
     
-    public var baseURLWithCredentials: String? {
+    open var baseURLWithCredentials: String? {
         if let credentials = credentials, let url = url {
             return "https://\(credentials.userName):\(credentials.password)@\(url):2728"
         } else {
@@ -55,14 +55,14 @@ public class SettingsManager {
         }
     }
     
-    public func setCredentials(cred: Credentials) {
+    open func setCredentials(_ cred: Credentials) {
         credentials = cred
-        NSUserDefaults.standardUserDefaults().setValue(credentials?.userName, forKey: "username")
-        NSUserDefaults.standardUserDefaults().setValue(credentials?.password, forKey: "password")
+        UserDefaults.standard.setValue(credentials?.userName, forKey: "username")
+        UserDefaults.standard.setValue(credentials?.password, forKey: "password")
     }
     
-    public func setURL(siteUrl: String) {
+    open func setURL(_ siteUrl: String) {
         url = siteUrl
-        NSUserDefaults.standardUserDefaults().setValue(siteUrl, forKey: "siteUrl")
+        UserDefaults.standard.setValue(siteUrl, forKey: "siteUrl")
     }
 }

@@ -33,16 +33,16 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func clear(sender: AnyObject) {
+    @IBAction func clear(_ sender: AnyObject) {
         usernameField.text = ""
         passwordField.text = ""
         urlField.text = ""
     }
     
-    @IBAction func save(sender: AnyObject) {
-        guard let username = usernameField.text where username != "",
-            let password = passwordField.text where password != "",
-            let url = urlField.text where url != "" else {
+    @IBAction func save(_ sender: AnyObject) {
+        guard let username = usernameField.text, username != "",
+            let password = passwordField.text, password != "",
+            let url = urlField.text, url != "" else {
                 return
         }
         
@@ -51,7 +51,7 @@ class SettingsViewController: UIViewController {
         SettingsManager.sharedInstance.setURL(url)
         
         completionHandler?()
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

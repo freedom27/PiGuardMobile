@@ -11,21 +11,21 @@ import PiGuardKit
 
 class MotionPicturesViewController: UITableViewController {
     
-    private let _dateFormatter: NSDateFormatter = {
-        var formatter = NSDateFormatter()
+    fileprivate let _dateFormatter: DateFormatter = {
+        var formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, HH:mm:ss"
         return formatter
     }()
     
-    private let _downloadQueue: NSOperationQueue = {
-        let queue = NSOperationQueue()
+    fileprivate let _downloadQueue: OperationQueue = {
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         queue.name = "Download Queue"
         return queue
     }()
     var _pictureInDownloadForCell = [MotionPictureCell: ImageDownloadOperation]()
     
-    var motions = [(NSDate, String)]()
+    var motions = [(Date, String)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,18 +36,18 @@ class MotionPicturesViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 extension MotionPicturesViewController {
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return motions.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("motionPicture", forIndexPath: indexPath) as! MotionPictureCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "motionPicture", for: indexPath) as! MotionPictureCell
         
-        _pictureInDownloadForCell.removeValueForKey(cell)?.cancel()
+        _pictureInDownloadForCell.removeValue(forKey: cell)?.cancel()
         
         let (motionDate, motionPicture) = motions[indexPath.row]
         
-        cell.timestampLabel.text = _dateFormatter.stringFromDate(motionDate)
+        cell.timestampLabel.text = _dateFormatter.string(from: motionDate)
         cell.picture.image = nil
         if let baseURL = SettingsManager.sharedInstance.baseURLWithCredentials {
             let downloadOperation = ImageDownloadOperation(url: "\(baseURL)/image/\(motionPicture)") { image in
@@ -64,8 +64,8 @@ extension MotionPicturesViewController {
 //MARK: UITableViewDelegate
 extension MotionPicturesViewController {
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UIScreen.mainScreen().bounds.width * (3/4)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UIScreen.main.bounds.width * (3/4)
     }
     
 }

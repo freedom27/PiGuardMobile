@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public enum CommandType: String {
     case Start = "/command/start"
@@ -18,7 +19,7 @@ public enum CommandType: String {
 }
 
 public struct Status {
-    public let timestamp: NSDate
+    public let timestamp: Date
     public let pictureName: String
     public let temperature: Double?
     public let humidity: Double?
@@ -29,8 +30,8 @@ public struct Status {
 
 public struct SystemStatus {
     public enum Status {
-        case Started
-        case Stopped
+        case started
+        case stopped
     }
     
     public enum Mode: String {
@@ -42,35 +43,35 @@ public struct SystemStatus {
     public var mode: Mode
 }
 
-public enum PiGuardError: ErrorType {
-    case EmptyResponseError
-    case InvalidStatus
-    case SettingsMissing
+public enum PiGuardError: Error {
+    case emptyResponseError
+    case invalidStatus
+    case settingsMissing
 }
 
-private let _dateFormatter: NSDateFormatter = {
-    var formatter = NSDateFormatter()
+private let _dateFormatter: DateFormatter = {
+    var formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
     return formatter
 }()
 
-private func statusFromJson(json: JSON) -> Status? {
+private func statusFromJson(_ json: JSON) -> Status? {
     guard let timestamp = json["timestamp"].string,
         let pictureName = json["picture"].string else {
             return nil
     }
     
-    let date = _dateFormatter.dateFromString(timestamp)
-    return Status(timestamp: date!, pictureName: pictureName, temperature: json["temperature"], humidity: json["humidity"], pressure: json["pressure"], co2: json["co2"], motion: json["motion"])
+    let date = _dateFormatter.date(from: timestamp)
+    return Status(timestamp: date!, pictureName: pictureName, temperature: json["temperature"].double, humidity: json["humidity"].double, pressure: json["pressure"].double, co2: json["co2"].int, motion: json["motion"].bool)
 }
 
-public func systemStatusFromJson(json: JSON) throws -> SystemStatus {
-    if let started: Bool = json["response"]["system_status"]["started"],
-        let strMode: String = json["response"]["system_status"]["mode"],
+public func systemStatusFromJson(_ json: JSON) throws -> SystemStatus {
+    if let started: Bool = json["response"]["system_status"]["started"].bool,
+        let strMode: String = json["response"]["system_status"]["mode"].string,
         let mode = SystemStatus.Mode(rawValue: strMode) {
-        return SystemStatus(status: started ? .Started : .Stopped, mode: mode)
+        return SystemStatus(status: started ? .started : .stopped, mode: mode)
     } else {
-        throw PiGuardError.InvalidStatus
+        throw PiGuardError.invalidStatus
     }
 }
 
@@ -82,51 +83,51 @@ private func authenticationToken() -> String? {
     }
     
     let loginString = "\(username):\(password)"
-    let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-    let base64LoginString = loginData.base64EncodedStringWithOptions([])
+    let loginData: Data = loginString.data(using: String.Encoding.utf8)!
+    let base64LoginString = loginData.base64EncodedString(options: [])
     
     return base64LoginString
 }
 
-private func createRequestForAPI(api: String) throws -> NSURLRequest {
+private func createRequestForAPI(_ api: String) throws -> URLRequest {
     guard let baseURL = SettingsManager.sharedInstance.baseURL else {
-        throw PiGuardError.SettingsMissing
+        throw PiGuardError.settingsMissing
     }
     
-    let url = NSURL(string: "\(baseURL)\(api)")
-    let request = NSMutableURLRequest(URL: url!)
-    request.HTTPMethod = "GET"
+    let url = URL(string: "\(baseURL)\(api)")
+    let request = NSMutableURLRequest(url: url!)
+    request.httpMethod = "GET"
     if let authToken = authenticationToken() {
         request.setValue("Basic \(authToken)", forHTTPHeaderField: "Authorization")
     }
     
-    return request
+    return request as URLRequest
 }
 
-private func request(apiPath: String) -> Promise<JSON> {
+private func request(_ apiPath: String) -> Promise<JSON> {
     return Promise<JSON> { success, fail in
         let request = try createRequestForAPI(apiPath)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             if let error = error {
                 fail(error)
             } else if let data = data {
                 success(JSON(data: data))
             } else {
-                fail(PiGuardError.EmptyResponseError)
+                fail(PiGuardError.emptyResponseError)
             }
-        }
+        }) 
         task.resume()
     }
 }
 
-public func command(command: CommandType) -> Promise<JSON> {
+public func command(_ command: CommandType) -> Promise<JSON> {
     return request(command.rawValue)
 }
 
-public func statuses(hours: Int) -> Promise<[Status]> {
+public func statuses(_ hours: Int) -> Promise<[Status]> {
     let apiPath = "/statuses/\(hours)"
     return request(apiPath).then { (jsonObjects: JSON) -> [Status] in
-        return jsonObjects["statuses"].flatMap(statusFromJson)
+        return jsonObjects["statuses"].arrayValue.flatMap(statusFromJson)
     }
 }
 

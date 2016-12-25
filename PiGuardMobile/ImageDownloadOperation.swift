@@ -8,25 +8,25 @@
 
 import UIKit
 
-class ImageDownloadOperation: NSOperation {
+class ImageDownloadOperation: Operation {
     
-    let imageURL: NSURL?
+    let imageURL: URL?
     let imageUpdateBlock: (UIImage)->()
     
-    init(url: String, imageUpdateBlock: (UIImage)->()) {
-        self.imageURL = NSURL(string: url)
+    init(url: String, imageUpdateBlock: @escaping (UIImage)->()) {
+        self.imageURL = URL(string: url)
         self.imageUpdateBlock = imageUpdateBlock
     }
     
     override func main() {
-        guard !self.cancelled,
+        guard !self.isCancelled,
             let url = imageURL,
-            data = NSData(contentsOfURL: url),
-            image = UIImage(data: data) else { return }
+            let data = try? Data(contentsOf: url),
+            let image = UIImage(data: data) else { return }
         
         print("downloading....")
-        if !self.cancelled {
-            dispatch_async(dispatch_get_main_queue()) {
+        if !self.isCancelled {
+            DispatchQueue.main.async {
                 self.imageUpdateBlock(image)
             }
         }

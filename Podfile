@@ -7,3 +7,9 @@ pod "Charts"
 
 end
 
+target 'PiGuardKit' do
+
+pod 'SwiftyJSON'
+
+end
+

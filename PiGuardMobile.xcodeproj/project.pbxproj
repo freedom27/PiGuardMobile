@@ -12,10 +12,9 @@
 		1A13C0DD1CB5A59B003D17E6 /* PiGuardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A13C0D61CB5A59B003D17E6 /* PiGuardKit.framework */; };
 		1A13C0DE1CB5A59B003D17E6 /* PiGuardKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A13C0D61CB5A59B003D17E6 /* PiGuardKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A13C0E41CB5A5D7003D17E6 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A13C0E31CB5A5D7003D17E6 /* Promise.swift */; };
-		1A13C0E61CB5A90C003D17E6 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A13C0E51CB5A90C003D17E6 /* JSON.swift */; };
 		1A13C0E81CB5A9A8003D17E6 /* PiGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A13C0E71CB5A9A8003D17E6 /* PiGuard.swift */; };
 		1A40E7E61CBB019C00BED866 /* ImageDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40E7E51CBB019C00BED866 /* ImageDownloadOperation.swift */; };
-		1A40E7E81CBCCB4000BED866 /* UIBarButtonItem+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40E7E71CBCCB4000BED866 /* UIBarButtonItem+Badge.swift */; };
+		1A40E7E81CBCCB4000BED866 /* UIBarItem+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40E7E71CBCCB4000BED866 /* UIBarItem+Badge.swift */; };
 		1A4CFFE71CB02F1100E025FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4CFFE61CB02F1100E025FB /* AppDelegate.swift */; };
 		1A4CFFE91CB02F1100E025FB /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4CFFE81CB02F1100E025FB /* SummaryViewController.swift */; };
 		1A4CFFEB1CB02F1100E025FB /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4CFFEA1CB02F1100E025FB /* RemoteViewController.swift */; };
@@ -28,7 +27,8 @@
 		1AE59E131CB7182100B625A8 /* MjpegStreamingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE59E121CB7182100B625A8 /* MjpegStreamingViewController.swift */; };
 		1AF287D71CBACEB900E3E338 /* MotionPicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF287D61CBACEB900E3E338 /* MotionPicturesViewController.swift */; };
 		1AF287D91CBAD21600E3E338 /* MotionPictureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF287D81CBAD21600E3E338 /* MotionPictureCell.swift */; };
-		436CA7F69EE41773D579AC7E /* Pods_PiGuardMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F0D6FA888B93675776AF9 /* Pods_PiGuardMobile.framework */; };
+		1B441C751DB2CAB4D7012229 /* Pods_PiGuardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981B3C9BC36ADC76084AE163 /* Pods_PiGuardKit.framework */; };
+		9C05D78ACC7FED3910639D3C /* Pods_PiGuardMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DBC7458D65F8C0659B8196 /* Pods_PiGuardMobile.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,10 +61,9 @@
 		1A13C0D81CB5A59B003D17E6 /* PiGuardKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PiGuardKit.h; sourceTree = "<group>"; };
 		1A13C0DA1CB5A59B003D17E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A13C0E31CB5A5D7003D17E6 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
-		1A13C0E51CB5A90C003D17E6 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		1A13C0E71CB5A9A8003D17E6 /* PiGuard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiGuard.swift; sourceTree = "<group>"; };
 		1A40E7E51CBB019C00BED866 /* ImageDownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloadOperation.swift; sourceTree = "<group>"; };
-		1A40E7E71CBCCB4000BED866 /* UIBarButtonItem+Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Badge.swift"; sourceTree = "<group>"; };
+		1A40E7E71CBCCB4000BED866 /* UIBarItem+Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarItem+Badge.swift"; sourceTree = "<group>"; };
 		1A4CFFE31CB02F1100E025FB /* PiGuardMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiGuardMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A4CFFE61CB02F1100E025FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A4CFFE81CB02F1100E025FB /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
@@ -79,9 +78,12 @@
 		1AE59E121CB7182100B625A8 /* MjpegStreamingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MjpegStreamingViewController.swift; sourceTree = "<group>"; };
 		1AF287D61CBACEB900E3E338 /* MotionPicturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionPicturesViewController.swift; sourceTree = "<group>"; };
 		1AF287D81CBAD21600E3E338 /* MotionPictureCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionPictureCell.swift; sourceTree = "<group>"; };
-		472F0D6FA888B93675776AF9 /* Pods_PiGuardMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiGuardMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE447AE62222791B73CBA54D /* Pods-PiGuardMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		EB361BA67412297A4F4EB45C /* Pods-PiGuardMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardMobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile.release.xcconfig"; sourceTree = "<group>"; };
+		505A6E7384F515D777CB9AFA /* Pods-PiGuardMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		981B3C9BC36ADC76084AE163 /* Pods_PiGuardKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiGuardKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9251529BD3739A0637F377A /* Pods-PiGuardKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardKit/Pods-PiGuardKit.debug.xcconfig"; sourceTree = "<group>"; };
+		D545867FCCA6957235F53DF0 /* Pods-PiGuardMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardMobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile.release.xcconfig"; sourceTree = "<group>"; };
+		F9DBC7458D65F8C0659B8196 /* Pods_PiGuardMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiGuardMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCD6A3B59986BC9976B6EA04 /* Pods-PiGuardKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiGuardKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-PiGuardKit/Pods-PiGuardKit.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B441C751DB2CAB4D7012229 /* Pods_PiGuardKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A13C0DD1CB5A59B003D17E6 /* PiGuardKit.framework in Frameworks */,
-				436CA7F69EE41773D579AC7E /* Pods_PiGuardMobile.framework in Frameworks */,
+				9C05D78ACC7FED3910639D3C /* Pods_PiGuardMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +110,6 @@
 		1A13C0D71CB5A59B003D17E6 /* PiGuardKit */ = {
 			isa = PBXGroup;
 			children = (
-				1A13C0E51CB5A90C003D17E6 /* JSON.swift */,
 				1A13C0D81CB5A59B003D17E6 /* PiGuardKit.h */,
 				1A13C0DA1CB5A59B003D17E6 /* Info.plist */,
 				1A13C0E31CB5A5D7003D17E6 /* Promise.swift */,
@@ -124,8 +126,8 @@
 				1A4CFFE51CB02F1100E025FB /* PiGuardMobile */,
 				1A13C0D71CB5A59B003D17E6 /* PiGuardKit */,
 				1A4CFFE41CB02F1100E025FB /* Products */,
-				9784B398E790BB852F671ACE /* Pods */,
-				F95CEAD6DB1B11AE750EDA4A /* Frameworks */,
+				87192CA3A408E87AC9A77BBF /* Pods */,
+				3B44E643EB78850EA39F17C0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,27 +155,30 @@
 				1A40E7E51CBB019C00BED866 /* ImageDownloadOperation.swift */,
 				1AF287D61CBACEB900E3E338 /* MotionPicturesViewController.swift */,
 				1AF287D81CBAD21600E3E338 /* MotionPictureCell.swift */,
-				1A40E7E71CBCCB4000BED866 /* UIBarButtonItem+Badge.swift */,
+				1A40E7E71CBCCB4000BED866 /* UIBarItem+Badge.swift */,
 				1A8803AA1CCC29540069EE35 /* SettingsViewController.swift */,
 			);
 			path = PiGuardMobile;
 			sourceTree = "<group>";
 		};
-		9784B398E790BB852F671ACE /* Pods */ = {
+		3B44E643EB78850EA39F17C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE447AE62222791B73CBA54D /* Pods-PiGuardMobile.debug.xcconfig */,
-				EB361BA67412297A4F4EB45C /* Pods-PiGuardMobile.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		F95CEAD6DB1B11AE750EDA4A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				472F0D6FA888B93675776AF9 /* Pods_PiGuardMobile.framework */,
+				F9DBC7458D65F8C0659B8196 /* Pods_PiGuardMobile.framework */,
+				981B3C9BC36ADC76084AE163 /* Pods_PiGuardKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		87192CA3A408E87AC9A77BBF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				505A6E7384F515D777CB9AFA /* Pods-PiGuardMobile.debug.xcconfig */,
+				D545867FCCA6957235F53DF0 /* Pods-PiGuardMobile.release.xcconfig */,
+				C9251529BD3739A0637F377A /* Pods-PiGuardKit.debug.xcconfig */,
+				FCD6A3B59986BC9976B6EA04 /* Pods-PiGuardKit.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,10 +199,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A13C0DF1CB5A59B003D17E6 /* Build configuration list for PBXNativeTarget "PiGuardKit" */;
 			buildPhases = (
+				0D6EAD162717DA02BB57BED6 /* [CP] Check Pods Manifest.lock */,
 				1A13C0D11CB5A59B003D17E6 /* Sources */,
 				1A13C0D21CB5A59B003D17E6 /* Frameworks */,
 				1A13C0D31CB5A59B003D17E6 /* Headers */,
 				1A13C0D41CB5A59B003D17E6 /* Resources */,
+				E0CA4E1610CD70D16F0DF1D7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -212,13 +219,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A4CFFF71CB02F1100E025FB /* Build configuration list for PBXNativeTarget "PiGuardMobile" */;
 			buildPhases = (
-				BD9BAE6B18E4F68A7F19B7F9 /* Check Pods Manifest.lock */,
+				633565697A573D032598D926 /* [CP] Check Pods Manifest.lock */,
 				1A4CFFDF1CB02F1100E025FB /* Sources */,
 				1A4CFFE01CB02F1100E025FB /* Frameworks */,
 				1A4CFFE11CB02F1100E025FB /* Resources */,
-				E33E6B7D7A89DABCD602A9FB /* Embed Pods Frameworks */,
-				CE80A4CA49CEA577897C9B23 /* Copy Pods Resources */,
 				1A13C0E21CB5A59B003D17E6 /* Embed Frameworks */,
+				5EFC8FFE9148CE299B1D7C45 /* [CP] Embed Pods Frameworks */,
+				060A7D92EFC9DC8692E98713 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,9 +249,12 @@
 				TargetAttributes = {
 					1A13C0D51CB5A59B003D17E6 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 					};
 					1A4CFFE21CB02F1100E025FB = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = H9H2DT99BY;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -288,29 +298,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BD9BAE6B18E4F68A7F19B7F9 /* Check Pods Manifest.lock */ = {
+		060A7D92EFC9DC8692E98713 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		CE80A4CA49CEA577897C9B23 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,19 +313,64 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E33E6B7D7A89DABCD602A9FB /* Embed Pods Frameworks */ = {
+		0D6EAD162717DA02BB57BED6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5EFC8FFE9148CE299B1D7C45 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PiGuardMobile/Pods-PiGuardMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		633565697A573D032598D926 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E0CA4E1610CD70D16F0DF1D7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PiGuardKit/Pods-PiGuardKit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -344,7 +384,6 @@
 				1A8803B21CCCF9EB0069EE35 /* SettingsManager.swift in Sources */,
 				1A13C0E81CB5A9A8003D17E6 /* PiGuard.swift in Sources */,
 				1A13C0E41CB5A5D7003D17E6 /* Promise.swift in Sources */,
-				1A13C0E61CB5A90C003D17E6 /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +398,7 @@
 				1A40E7E61CBB019C00BED866 /* ImageDownloadOperation.swift in Sources */,
 				1A13C0D01CB59308003D17E6 /* SummaryViewModel.swift in Sources */,
 				1A4CFFE91CB02F1100E025FB /* SummaryViewController.swift in Sources */,
-				1A40E7E81CBCCB4000BED866 /* UIBarButtonItem+Badge.swift in Sources */,
+				1A40E7E81CBCCB4000BED866 /* UIBarItem+Badge.swift in Sources */,
 				1AF287D71CBACEB900E3E338 /* MotionPicturesViewController.swift in Sources */,
 				1AF287D91CBAD21600E3E338 /* MotionPictureCell.swift in Sources */,
 			);
@@ -397,6 +436,7 @@
 /* Begin XCBuildConfiguration section */
 		1A13C0E01CB5A59B003D17E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9251529BD3739A0637F377A /* Pods-PiGuardKit.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -411,6 +451,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -419,6 +460,7 @@
 		};
 		1A13C0E11CB5A59B003D17E6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCD6A3B59986BC9976B6EA04 /* Pods-PiGuardKit.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -432,6 +474,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.stefanovettor.PiGuardKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -523,27 +566,31 @@
 		};
 		1A4CFFF81CB02F1100E025FB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE447AE62222791B73CBA54D /* Pods-PiGuardMobile.debug.xcconfig */;
+			baseConfigurationReference = 505A6E7384F515D777CB9AFA /* Pods-PiGuardMobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9H2DT99BY;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PiGuardMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stefanovettor.PiGuardMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		1A4CFFF91CB02F1100E025FB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB361BA67412297A4F4EB45C /* Pods-PiGuardMobile.release.xcconfig */;
+			baseConfigurationReference = D545867FCCA6957235F53DF0 /* Pods-PiGuardMobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9H2DT99BY;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PiGuardMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.stefanovettor.PiGuardMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

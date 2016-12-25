@@ -11,13 +11,13 @@ import PiGuardKit
 
 class SummaryViewModel {
     
-    private let _dateFormatter: NSDateFormatter = {
-        var formatter = NSDateFormatter()
+    fileprivate let _dateFormatter: DateFormatter = {
+        var formatter = DateFormatter()
         formatter.dateFormat = "dd MMM-HH:mm"
         return formatter
     }()
     
-    var errorHandler: (ErrorType->Void)?
+    var errorHandler: ((Error)->Void)?
     
     var picture: Dynamic<UIImage?>
     var date: Dynamic<String>
@@ -32,14 +32,14 @@ class SummaryViewModel {
     var pressureHistory: Dynamic<[(Double, String)]>
     var co2History: Dynamic<[(Int, String)]>
     
-    var motionHistory: Dynamic<[(NSDate, String)]>
+    var motionHistory: Dynamic<[(Date, String)]>
     
     var systemOn: Dynamic<Bool>
     var surveillanceOn: Dynamic<Bool>
     
-    var streamingURL: NSURL? {
+    var streamingURL: URL? {
         if let baseURL = SettingsManager.sharedInstance.baseURLWithCredentials {
-            return NSURL(string: "\(baseURL)/live_video")!
+            return URL(string: "\(baseURL)/live_video")!
         } else {
             return nil
         }
@@ -59,7 +59,7 @@ class SummaryViewModel {
         humidityHistory = Dynamic(value: [(Double, String)]())
         pressureHistory = Dynamic(value: [(Double, String)]())
         co2History = Dynamic(value: [(Int, String)]())
-        motionHistory = Dynamic(value: [(NSDate, String)]())
+        motionHistory = Dynamic(value: [(Date, String)]())
         systemOn = Dynamic(value: false)
         surveillanceOn = Dynamic(value: false)
     }
@@ -67,10 +67,10 @@ class SummaryViewModel {
     func loadData() {
         PiGuardKit.statuses(24).then { statuses in
             let status = statuses[0]
-            dispatch_async(dispatch_get_main_queue()) {
-                let dateTime = self._dateFormatter.stringFromDate(status.timestamp)
-                self.date.value = dateTime.substringToIndex(dateTime.rangeOfString("-")!.startIndex)
-                self.time.value = dateTime.substringFromIndex(dateTime.rangeOfString("-")!.startIndex.advancedBy(1))
+            DispatchQueue.main.async {
+                let dateTime = self._dateFormatter.string(from: status.timestamp)
+                self.date.value = dateTime.substring(to: dateTime.range(of: "-")!.lowerBound)
+                self.time.value = dateTime.substring(from: dateTime.index(dateTime.range(of: "-")!.lowerBound, offsetBy: 1))
                 self.temperature.value = status.temperature != nil ? "\(status.temperature!)°C" : nil
                 self.humidity.value = status.humidity != nil ? "\(status.humidity!)%" : nil
                 self.pressure.value = status.pressure != nil ? "\(status.pressure!)mbar" : nil
@@ -79,16 +79,16 @@ class SummaryViewModel {
                 self.motionHistory.value = statuses.filter{$0.motion ?? false}.map{($0.timestamp, $0.pictureName)}
                 
                 if let baseURL = SettingsManager.sharedInstance.baseURLWithCredentials {
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-                        guard let imageUrl = NSURL(string: "\(baseURL)/image/\(status.pictureName)"),
-                            let imageData = NSData(contentsOfURL: imageUrl) else { return }
-                        dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
+                        guard let imageUrl = URL(string: "\(baseURL)/image/\(status.pictureName)"),
+                            let imageData = try? Data(contentsOf: imageUrl) else { return }
+                        DispatchQueue.main.async {
                             self.picture.value = UIImage(data: imageData)
                         }
                     }
                 }
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.prepareHistoryData(statuses)
             }
         }.error {
@@ -100,22 +100,22 @@ class SummaryViewModel {
         PiGuardKit.systemStatus().then(prepareStatus).error{ print($0) }
     }
     
-    func prepareStatus(systemStatus: SystemStatus) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.systemOn.value = systemStatus.status == .Started
+    func prepareStatus(_ systemStatus: SystemStatus) {
+        DispatchQueue.main.async {
+            self.systemOn.value = systemStatus.status == .started
             self.surveillanceOn.value = systemStatus.mode == .Surveillance
         }
     }
     
-    func prepareHistoryData(statuses: [Status]) {
-        let timeFormatter: NSDateFormatter = {
-            let formatter = NSDateFormatter()
+    func prepareHistoryData(_ statuses: [Status]) {
+        let timeFormatter: DateFormatter = {
+            let formatter = DateFormatter()
             formatter.dateFormat = "HH:mm"
             return formatter
         }()
-        self.temperatureHistory.value = statuses.filter{$0.temperature != nil}.map{($0.temperature!, timeFormatter.stringFromDate($0.timestamp))}.reverse()
-        self.humidityHistory.value = statuses.filter{$0.humidity != nil}.map{($0.humidity!, timeFormatter.stringFromDate($0.timestamp))}.reverse()
-        self.pressureHistory.value = statuses.filter{$0.pressure != nil}.map{($0.pressure!, timeFormatter.stringFromDate($0.timestamp))}.reverse()
-        self.co2History.value = statuses.filter{$0.co2 != nil}.map{($0.co2!, timeFormatter.stringFromDate($0.timestamp))}.reverse()
+        self.temperatureHistory.value = statuses.filter{$0.temperature != nil}.map{($0.temperature!, timeFormatter.string(from: $0.timestamp))}.reversed()
+        self.humidityHistory.value = statuses.filter{$0.humidity != nil}.map{($0.humidity!, timeFormatter.string(from: $0.timestamp))}.reversed()
+        self.pressureHistory.value = statuses.filter{$0.pressure != nil}.map{($0.pressure!, timeFormatter.string(from: $0.timestamp))}.reversed()
+        self.co2History.value = statuses.filter{$0.co2 != nil}.map{($0.co2!, timeFormatter.string(from: $0.timestamp))}.reversed()
     }
 }

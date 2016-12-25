@@ -9,60 +9,60 @@
 import Foundation
 
 public enum Result<T> {
-    case Success(T)
-    case Error(ErrorType)
+    case success(T)
+    case error(Error)
     
-    public func map<U>(f: T->U) -> Result<U> {
+    public func map<U>(_ f: (T)->U) -> Result<U> {
         switch self {
-        case .Error(let error): return .Error(error)
-        case .Success(let t): return .Success(f(t))
+        case .error(let error): return .error(error)
+        case .success(let t): return .success(f(t))
         }
     }
     
-    public func map<U>(f: T throws ->U) -> Result<U> {
+    public func map<U>(_ f: (T) throws ->U) -> Result<U> {
         switch self {
-        case .Error(let error): return .Error(error)
-        case .Success(let t):
+        case .error(let error): return .error(error)
+        case .success(let t):
             do {
-                return try .Success(f(t))
+                return try .success(f(t))
             } catch let error {
-                return .Error(error)
+                return .error(error)
             }
         }
     }
     
-    public func flatMap<U>(f: T->Result<U>) -> Result<U> {
+    public func flatMap<U>(_ f: (T)->Result<U>) -> Result<U> {
         switch self {
-        case .Error(let error): return .Error(error)
-        case .Success(let t): return f(t)
+        case .error(let error): return .error(error)
+        case .success(let t): return f(t)
         }
     }
     
     public func value() throws -> T {
         switch self {
-        case .Error(let error): throw error
-        case .Success(let t): return t
+        case .error(let error): throw error
+        case .success(let t): return t
         }
     }
 }
 
 
-public class Promise<T> {
-    private let _queue: dispatch_queue_t
-    private var _result: Result<T>?
+open class Promise<T> {
+    fileprivate let _queue: DispatchQueue
+    fileprivate var _result: Result<T>?
     
-    public init(c: (T->Void, ErrorType->Void)->Void) {
-        _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        dispatch_async(_queue) {
-            dispatch_suspend(self._queue)
+    public init(c: @escaping (@escaping (T)->Void, @escaping (Error)->Void)->Void) {
+        _queue = DispatchQueue(label: "MyPromise")
+        _queue.async {
+            self._queue.suspend()
             c(self.onSuccess, self.onFailure)
         }
     }
     
-    public init(c: (T->Void, ErrorType->Void) throws ->Void) {
-        _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        dispatch_async(_queue) {
-            dispatch_suspend(self._queue)
+    public init(c: @escaping (@escaping (T)->Void, @escaping (Error)->Void) throws ->Void) {
+        _queue = DispatchQueue(label: "MyPromise")
+        _queue.async {
+            self._queue.suspend()
             do {
                 try c(self.onSuccess, self.onFailure)
             } catch let error {
@@ -71,70 +71,70 @@ public class Promise<T> {
         }
     }
     
-    private init(queue: dispatch_queue_t, c: (T->Void, ErrorType->Void)->Void) {
+    fileprivate init(queue: DispatchQueue, c: @escaping (@escaping (T)->Void, @escaping (Error)->Void)->Void) {
         _queue = queue
-        dispatch_async(_queue) {
-            dispatch_suspend(self._queue)
+        _queue.async {
+            self._queue.suspend()
             c(self.onSuccess, self.onFailure)
         }
     }
     
-    private init(queue: dispatch_queue_t, c: (Result<T>->Void)->Void) {
+    fileprivate init(queue: DispatchQueue, c: @escaping ( @escaping (Result<T>)->Void)->Void) {
         _queue = queue
-        dispatch_async(_queue) {
-            dispatch_suspend(self._queue)
+        _queue.async {
+            self._queue.suspend()
             c(self.resolve)
         }
     }
     
-    private func onSuccess(t: T) {
-        resolve(.Success(t))
+    fileprivate func onSuccess(_ t: T) {
+        resolve(.success(t))
     }
     
-    private func onFailure(e: ErrorType) {
-        resolve(.Error(e))
+    fileprivate func onFailure(_ e: Error) {
+        resolve(.error(e))
     }
     
-    private func resolve(response: Result<T>) {
+    fileprivate func resolve(_ response: Result<T>) {
         _result = response
-        dispatch_resume(_queue)
+        _queue.resume()
     }
     
-    public func then<U>(f: T->U) -> Promise<U> {
+    open func then<U>(_ f: @escaping (T)->U) -> Promise<U> {
         return Promise<U>(queue: _queue) { resolve in
             resolve(self._result!.map(f))
         }
     }
     
-    public func then<U>(f: T throws ->U) -> Promise<U> {
+    open func then<U>(_ f: @escaping (T) throws ->U) -> Promise<U> {
         return Promise<U>(queue: _queue) { resolve in
             resolve(self._result!.map(f))
         }
     }
     
-    public func then<U>(f: (T, U->Void, ErrorType->Void)->Void) -> Promise<U> {
+    open func then<U>(_ f: @escaping (T, (U)->Void, (Error)->Void)->Void) -> Promise<U> {
         return Promise<U>(queue: _queue) { onSuccess, onFail in
             switch self._result! {
-            case .Success(let result):
+            case .success(let result):
                 f(result, onSuccess, onFail)
-            case .Error(let error):
+            case .error(let error):
                 onFail(error)
             }
         }
     }
     
-    public func then(f: T->Void) -> Promise<T> {
-        dispatch_async(_queue) {
-            if let result = self._result, case .Success(let value) = result {
+    open func then(_ f: @escaping (T)->Void) -> Promise<T> {
+        _queue.async {
+            if let result = self._result, case .success(let value) = result {
                 f(value)
             }
         }
         return self
     }
     
-    public func error(f: ErrorType->Void) -> Promise<T> {
-        dispatch_async(_queue) {
-            if let result = self._result, case .Error(let error) = result {
+    open func error(_ f: @escaping (Error)->Void) -> Promise<T> {
+        _queue.async {
+            if let result = self._result, case .error(let error) = result {
                 f(error)
             }
         }
@@ -144,6 +144,6 @@ public class Promise<T> {
 
 extension Promise {
     public func wait(forSeconds seconds: Double) -> Promise<T> {
-        return self.then { _ in NSThread.sleepForTimeInterval(seconds) }
+        return self.then { _ in Thread.sleep(forTimeInterval: seconds) }
     }
 }
